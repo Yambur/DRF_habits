@@ -1,5 +1,5 @@
 from rest_framework import generics
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from habits.models import Habit
 from habits.permissions import OwnerPermission
@@ -38,7 +38,7 @@ class HabitDestroyAPIView(generics.DestroyAPIView):
     """Удаления одной привычки"""
     queryset = Habit.objects.all()
     serializer_class = HabitSerializer
-    permission_classes = [OwnerPermission]
+    permission_classes = [IsAuthenticated, OwnerPermission]
 
     def perform_destroy(self, instance):
         delete_periodic_task(instance)
